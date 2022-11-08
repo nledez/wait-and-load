@@ -26,3 +26,10 @@ class WaitAndLoad:
                 if self.status():
                     return True
             return False
+
+        def kv_put(self, key, value):
+            try:
+                self.consul.kv[key] = value
+            except AttributeError:
+                del self.consul.kv[key]
+                self.consul.kv[key] = value

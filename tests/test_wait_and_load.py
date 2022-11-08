@@ -3,7 +3,7 @@ from wait_and_load import WaitAndLoad
 import pytest
 import requests
 
-from unittest.mock import call, patch
+from unittest.mock import call, patch, Mock
 
 
 def catlog_nodes_empty():
@@ -80,3 +80,45 @@ def test_consul_wait_ok(mock_nodes, mock_sleep):
     ]
     assert mock_sleep.call_count == len(calls)
     mock_sleep.assert_has_calls(calls)
+
+
+@patch("consulate.Consul.kv", **{"__setitem__.side_effect": Mock()})
+def test_consul_put_kv_ok(mock_kv):
+    wc = WaitAndLoad()
+    wc.consul.kv_put("dir/key", "value")
+
+    calls = [call.__setitem__("dir/key", "value")]
+    mock_kv.assert_has_calls(calls)
+
+
+SET_SWITCH = 0
+
+
+def set_item(key, value):
+    global SET_SWITCH
+    if SET_SWITCH == 0:
+        SET_SWITCH = 1
+        print("With exception")
+        raise AttributeError()
+    else:
+        SET_SWITCH = 0
+        print("Normal insert")
+
+
+@patch(
+    "consulate.Consul.kv",
+    **{"__setitem__.side_effect": set_item, "__delitem__.side_effect": Mock()}
+)
+def test_consul_put_kv_ko(mock_kv):
+    global SET_SWITCH
+    SET_SWITCH = 0
+    wc = WaitAndLoad()
+    wc.consul.kv_put("dir/key", "value")
+
+    calls = [
+        call.__setitem__("dir/key", "value"),
+        call.__delitem__("dir/key"),
+        call.__setitem__("dir/key", "value"),
+    ]
+    assert len(mock_kv.mock_calls) == len(calls)
+    mock_kv.assert_has_calls(calls)

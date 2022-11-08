@@ -1,0 +1,32 @@
+[tool.poetry]
+name = "wait-and-load"
+version = "0.1.0"
+description = "Project to wait & load data in DB"
+authors = ["Nicolas Ledez <github.public@ledez.net>"]
+license = "GNU Affero General Public License v3.0"
+readme = "README.md"
+packages = [{include = "wait_and_load"}]
+
+[tool.poetry.dependencies]
+python = "^3.9"
+consulate = "^0.6.0"
+
+[tool.poetry.group.test]
+optional = true
+
+[tool.poetry.group.test.dependencies]
+pytest = "^7.2.0"
+pytest-cov = "^4.0.0"
+pytest-md = "^0.2.0"
+pytest-emoji = "^0.2.0"
+coveralls = "^3.3.1"
+
+[tool.poetry.group.dev]
+optional = true
+
+[tool.poetry.group.dev.dependencies]
+pytest-watch = "^4.2.0"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"

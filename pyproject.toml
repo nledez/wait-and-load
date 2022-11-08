@@ -26,6 +26,7 @@ optional = true
 
 [tool.poetry.group.dev.dependencies]
 pytest-watch = "^4.2.0"
+black = "^22.10.0"
 
 [build-system]
 requires = ["poetry-core"]

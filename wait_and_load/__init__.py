@@ -1,6 +1,7 @@
 import consulate
 import requests
 import time
+import yaml
 
 
 class WaitAndLoad:
@@ -33,3 +34,9 @@ class WaitAndLoad:
             except AttributeError:
                 del self.consul.kv[key]
                 self.consul.kv[key] = value
+
+        def load(self, filepath):
+            with open(filepath, "r") as content:
+                to_load = yaml.safe_load(content)
+            for k, v in to_load.items():
+                self.kv_put(k, v)

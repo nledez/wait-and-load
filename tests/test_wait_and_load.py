@@ -1,5 +1,6 @@
 from wait_and_load import WaitAndLoad
 
+import pathlib
 import pytest
 import requests
 
@@ -107,7 +108,7 @@ def set_item(key, value):
 
 @patch(
     "consulate.Consul.kv",
-    **{"__setitem__.side_effect": set_item, "__delitem__.side_effect": Mock()}
+    **{"__setitem__.side_effect": set_item, "__delitem__.side_effect": Mock()},
 )
 def test_consul_put_kv_ko(mock_kv):
     global SET_SWITCH
@@ -119,6 +120,20 @@ def test_consul_put_kv_ko(mock_kv):
         call.__setitem__("dir/key", "value"),
         call.__delitem__("dir/key"),
         call.__setitem__("dir/key", "value"),
+    ]
+    assert len(mock_kv.mock_calls) == len(calls)
+    mock_kv.assert_has_calls(calls)
+
+
+@patch("wait_and_load.WaitAndLoad.Consul.kv_put", **{"side_effect": Mock()})
+def test_consul_load(mock_kv):
+    wc = WaitAndLoad()
+    wc.consul.load(f"{pathlib.Path(__file__).parent.absolute()}/data.yaml")
+
+    calls = [
+        call.__setitem__("env", "dev"),
+        call.__setitem__("myapp/user", "user"),
+        call.__setitem__("myapp/pass", "pass"),
     ]
     assert len(mock_kv.mock_calls) == len(calls)
     mock_kv.assert_has_calls(calls)

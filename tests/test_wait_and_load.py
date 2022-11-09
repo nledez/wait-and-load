@@ -7,6 +7,29 @@ import requests
 from unittest.mock import call, patch, Mock
 
 
+@patch("wait_and_load.WaitAndLoad.Consul._consulate", **{"side_effect": Mock()})
+def test_parse_consul_url(mock_kv):
+    wc = WaitAndLoad()
+    assert wc.consul.scheme == "http"
+    assert wc.consul.host == "127.0.0.1"
+    assert wc.consul.port == "8500"
+    mock_kv.assert_called_once_with("http", "127.0.0.1", "8500")
+
+    mock_kv.reset_mock()
+    wc = WaitAndLoad("https://consul:8501")
+    assert wc.consul.scheme == "https"
+    assert wc.consul.host == "consul"
+    assert wc.consul.port == "8501"
+    mock_kv.assert_called_once_with("https", "consul", "8501")
+
+    mock_kv.reset_mock()
+    wc = WaitAndLoad("localhost:8502")
+    assert wc.consul.scheme == "http"
+    assert wc.consul.host == "localhost"
+    assert wc.consul.port == "8502"
+    mock_kv.assert_called_once_with("http", "localhost", "8502")
+
+
 def catlog_nodes_empty():
     return "[]"
 

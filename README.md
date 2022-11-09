@@ -28,3 +28,9 @@ Get inspiration in `docker-compose.yml` and launch:
 ```
 docker compose up
 ```
+
+## Docker build multiarch
+
+```
+docker buildx build --push --platform=linux/amd64,linux/arm64 -t nledez/$(poetry version | sed 's/ /:/') .
+```

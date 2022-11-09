@@ -21,3 +21,10 @@ ptw --nobeep --ignore .venv --onpass "terminal-notifier -title '✅' -message 'O
 # Or only:
 poetry run pytest -vvvvv --cov=wait_and_load --cov=tests && poetry run coverage html
 ```
+
+## Use in docker compose
+
+Get inspiration in `docker-compose.yml` and launch:
+```
+docker compose up
+```

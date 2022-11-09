@@ -1,0 +1,23 @@
+version: '3'
+
+services:
+  consul:
+    hostname: consul
+    image: consul:1.13.3
+    command: "agent"
+    volumes:
+      - ./tests/consul/server.json:/consul/config/server.json:ro
+    ports:
+      - "8500:8500"
+  consul-wait:
+    image: nledez/wait-and-load:0.1.0
+    restart: "no"
+    build:
+      context: .
+    volumes:
+      - ./tests/data.yaml:/data.yaml:ro
+    environment:
+      - CONSUL_HTTP_ADDR=http://consul:8500
+      - CONSUL_LOAD_FROM=/data.yaml
+    links:
+      - consul

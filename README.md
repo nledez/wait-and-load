@@ -5,7 +5,7 @@
 
 ## Requirements
 
-Install [Poetry](https://python-poetry.org/docs/#installation)
+Install [Poetry](https://python-poetry.org/docs/#installation) (>=1.2.1)
 
 ## Install
 

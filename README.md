@@ -2,6 +2,7 @@
 
 [![Tests on push](https://github.com/nledez/wait-and-load/actions/workflows/tests.yml/badge.svg)](https://github.com/nledez/wait-and-load/actions/workflows/tests.yml)
 [![Coverage Status](https://coveralls.io/repos/github/nledez/wait-and-load/badge.svg?branch=main&service=github)](https://coveralls.io/github/nledez/wait-and-load?branch=main)
+[![Docker Image Version (latest semver)](https://img.shields.io/docker/v/nledez/wait-and-load?label=docker%20image)](https://hub.docker.com/repository/docker/nledez/wait-and-load)
 
 ## Requirements
 
